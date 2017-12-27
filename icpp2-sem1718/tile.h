@@ -15,7 +15,7 @@
 
 class Tile : public ATile {
 private:
-	Point position;													// TODO - zeptat se Piskana
+	APoint& position;
 	TileState tileState;
 	int bombsInNeighbourhood;
 	bool bombTile;
@@ -23,30 +23,30 @@ private:
 public:
 	// Vytvori bunku na zadane souradnici
 	// Neni bombou, nema bomby v okoli, bunka je skryta
-	Tile(const Point& position);
+	Tile(const APoint& position);
 
 	// Zrusi bunku
 	~Tile();
 
 	// Vraci polohu bunky
-	const Point& getPosition() const;
+	const APoint& getPosition() const override;
 	// Nastavi novou polohu bunky
-	void setPosition(const Point& position);
+	void setPosition(const APoint& position) override;
 
 	// Vraci pocet bomb v okoli bunky
-	int getBombsInNeighbourhood() const;
+	int getBombsInNeighbourhood() const override;
 	// Nastavi pocet bomb v okoli bunky
-	void setBombsInNeighbourhood(int bombsInNeighbourhood);
+	void setBombsInNeighbourhood(int bombsInNeighbourhood) override;
 
 	// Vraci true, pokud je na bunce bomba
-	bool isBombTile() const;
+	bool isBombTile() const override;
 	// Nastavi jestli je na bunce bomba
-	void setBombTile(bool bombTile);
+	void setBombTile(bool bombTile) override;
 
 	// Vraci stav bunky
-	TileState getTileState() const;
+	TileState getTileState() const override;
 	// Nastavi stav bunky
-	void setTileState(TileState tileState);
+	void setTileState(TileState tileState) override;
 
 };
 

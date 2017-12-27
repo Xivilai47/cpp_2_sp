@@ -16,26 +16,26 @@ private:
 	int row, column;
 
 public:
-	Point();
+	//Point();
 	// Vytvori bod na zadanem radku a sloupci
 	Point(int row, int column);
 	// Zrusi bod
 	~Point();
 
 	// Vraci souradnici radek bodu
-	int getRow() const;
+	int getRow() const override;
 	// Vraci souradnici sloupce bodu
-	int getColumn() const;
+	int getColumn() const override;
 
 	// Test primeho kontaktu
 	// Vraci true - pokud se dva body tesne dotykaji
 	// Vraci falce - pokud this == point
-	bool isInContact(const Point& point) const;
+	bool isInContact(const APoint& point) const override;
 
 	// Vraci true, pokud souradnice this a point jsou shodne
-	bool operator==(const Point& point) const;
+	bool operator==(const APoint& point) const override;
 	// Vraci true, pokud souradnice this a point nejsou shodne
-	bool operator!=(const Point& point) const;
+	bool operator!=(const APoint& point) const override;
 
 };
 

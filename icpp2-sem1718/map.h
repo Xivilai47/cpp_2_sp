@@ -24,23 +24,23 @@ protected:
 
 public:
 	// Vytvori prazdnou mapu
-	Map(int rows, int columns, int mines) : rows(rows),columns(columns),totalMines(mines);
+	Map(int rows, int columns, int mines)/* : rows(rows),columns(columns),totalMines(mines)*/;
 
 	// Zrusi mapu
 	~Map();
 
 	// Vrati vybranou bunku
-	Tile& getTile(const Point& point);
+	ATile& getTile(const APoint& point);
 	// Vrati vybranou bunku
-	Tile& getTile(int row, int column);
+	ATile& getTile(int row, int column);
 	// Vrati vybranou bunku
-	const Tile& getTile(const Point& point) const;
+	const ATile& getTile(const APoint& point) const;
 	// Vrati vybranou bunku
-	const Tile& getTile(int row, int column) const;
+	const ATile& getTile(int row, int column) const;
 
 	// Nastavi na dane bunce hodnoty dle vstupniho parametru
 	// Metoda je pouzita pro moznost otestovani hry
-	void setTile(const Tile& tile);
+	void setTile(const ATile& tile);
 
 	// Prepocita vsechny hodnoty "bombsInNeighbourhood" na jednotlivych bunkach
 	void resetBombsInNeighbourhood();
@@ -49,25 +49,25 @@ public:
 	void generateMap();
 
 	// Vrati okoli bunky (bunky primo sousedici s danou bunkou)
-	TileNeighbourhood getNeighbourhood(const Point& point);
+	TileNeighbourhood getNeighbourhood(const APoint& point);
 
 	// Vrati true, pokud je na dane bunce umistena libovolna vlajka
-	bool isAnyFlagOnPoint(const Point& point) const;
+	bool isAnyFlagOnPoint(const APoint& point) const;
 
 	// Oznaci danou bunku vlajkou "bomba"
-	void flagPoint(const Point& point);
+	void flagPoint(const APoint& point);
 
 	// Oznaci danou bunku vlajkou "neznamo"
-	void flagAsUnknownPoint(const Point& point);
+	void flagAsUnknownPoint(const APoint& point);
 
 	// Zrusi vlajky na dane bunce
-	void unflagPoint(const Point& point);
+	void unflagPoint(const APoint& point);
 
 	// Odkryje bunku
 	// A pokud splnuje, ze nema zadne bomby v okoli, odkryvani pokracuje na vsechny
 	// sousedici bunky; proces se opakuje dokud odkryta bunka splnuje podminku 
 	// getBombsInNeighbourhood() == 0
-	void uncoverPoint(const Point& point);
+	void uncoverPoint(const APoint& point);
 
 	// Vrati pocet umistenych vlajek typu bomba
 	int getCountOfBombFlags() const;
