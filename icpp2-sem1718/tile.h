@@ -7,7 +7,7 @@
 
 // smazte tento radek po implementaci tridy Tile
 // jinak nebudou spousteny testy pro tridu Tile
-#define TILE_NOT_IMPLEMENTED
+//#define TILE_NOT_IMPLEMENTED
 
 // ...
 // zde chybi deklarace tridy Tile
