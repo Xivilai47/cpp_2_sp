@@ -27,9 +27,15 @@ bool is_bomb_uncovered(const ATile& tile) {
 }
 
 
+
 // Vytvori prazdnou mapu
 Map::Map(int rows, int columns, int mines) : AMap(rows,columns,mines), rows(rows), columns(columns), totalMines(mines) {
-	tiles.resize(rows*columns);
+	//tiles.resize(rows*columns);	
+	//for (int i = 0; i < rows*columns; i++) {
+	//	tiles.push_back(*new Tile(*new Point(1, 1)));
+	//}
+
+
 	//for (int i = 1; i <= rows; i++) {
 	//	for (int j = 1; j <= columns; j++) {
 	//		tiles.push_back(Tile{ Point{ i, j } });
@@ -44,9 +50,11 @@ Map::~Map() {
 
 // Vrati vybranou bunku
 ATile& Map::getTile(const APoint& point) {
-	auto iter = std::find(tiles.begin(), tiles.end(), point);
-	if (iter != tiles.end()) {
-		return *iter;
+	std::vector<Tile>::iterator iter = tiles.begin();
+	while (iter != tiles.end()) {
+		if ((*iter).getPosition() == point) {
+			return *iter;
+		}
 	}
 
 	/*for (ATile& tile : tiles) {
@@ -58,10 +66,17 @@ ATile& Map::getTile(const APoint& point) {
 
 // Vrati vybranou bunku
 ATile& Map::getTile(int row, int column) {
-	auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
-	if (iter != tiles.end()) {
-		return *iter;
+	std::vector<Tile>::iterator iter = tiles.begin();
+	while (iter != tiles.end()) {
+		if ((*iter).getPosition() == Point{ row,column }) {
+			return *iter;
+		}
 	}
+
+	//auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
+	//if (iter != tiles.end()) {
+	//	return *iter;
+	//}
 
 	//for (ATile& tile : tiles) {
 	//	if (tile.getPosition().getRow() == row && tile.getPosition().getColumn == column) {
@@ -71,33 +86,52 @@ ATile& Map::getTile(int row, int column) {
 }
 
 // Vrati vybranou bunku
+// TODO Odkomentovat 
 const ATile& Map::getTile(const APoint& point) const {
-	auto iter = std::find(tiles.begin(), tiles.end(), point);
-	if (iter != tiles.end()) {
-		return *iter;
+	std::vector<Tile>::const_iterator c_iter = tiles.begin();
+	while (c_iter != tiles.end()) {
+		if ((*c_iter).getPosition() == point) {
+			return *c_iter;
+		}
 	}
-	// TODO - jakej je rozdil mezi timhle a predchozim?
+
+	//auto iter = std::find(tiles.begin(), tiles.end(), point);
+	//if (iter != tiles.end()) {
+	//	return *iter;
+	//}
+
 }
 
 // Vrati vybranou bunku
 const ATile& Map::getTile(int row, int column) const {
-	auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
-	if (iter != tiles.end()) {
-		return *iter;
+	std::vector<Tile>::const_iterator c_iter = tiles.begin();
+	while (c_iter != tiles.end()) {
+		if ((*c_iter).getPosition() == Point{ row,column }) {
+			return *c_iter;
+		}
 	}
-	// TODO - jakej je rozdil mezi timhle a predchozim?
+
+	//auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
+	//if (iter != tiles.end()) {
+	//	return *iter;
+	//}
+	//// TODO - jakej je rozdil mezi timhle a predchozim?
 }
 
 // Nastavi na dane bunce hodnoty dle vstupniho parametru
 // Metoda je pouzita pro moznost otestovani hry
-// TODO - jaka bunka je "dana bunka?"
 void Map::setTile(const ATile& tile) {
-	getTile(tile.getPosition()).setTileState(tile.getTileState());
+	ATile& reffedTile = getTile(tile.getPosition());
+	reffedTile.setBombTile(tile.isBombTile());
+	reffedTile.setBombsInNeighbourhood(tile.getBombsInNeighbourhood());
+	reffedTile.setTileState(tile.getTileState());
+
+	//getTile(tile.getPosition()).setTileState(tile.getTileState());
 }
 
 // Prepocita vsechny hodnoty "bombsInNeighbourhood" na jednotlivych bunkach
 void Map::resetBombsInNeighbourhood() {
-	for (ATile& tile : tiles) {
+	for (Tile tile : tiles) {
 		int bombCount = 0;
 		std::vector<ATile*> neighbourhood = getNeighbourhood(tile.getPosition());
 		for (int i = 0; i < 8; i++) {
@@ -112,18 +146,18 @@ void Map::resetBombsInNeighbourhood() {
 // Vygeneruje nahodne mapu, umisti na ni "totalMines" min a nastavi jednotliva policka
 void Map::generateMap() {
 	for (int i = 0; i < totalMines; i++) {
-		tiles.push_back(Tile{ Point{1,1} });
+		tiles.push_back(*new Tile(*new Point(1, 1)));
 		tiles[i].setBombTile(true);
 	}
 	for (int i = 0; i < rows * columns - totalMines; i++) {
-		tiles.push_back(Tile{ Point{1,1} });
+		tiles.push_back(*new Tile(*new Point(1,1)));
 	}
 	std::random_shuffle(tiles.begin(), tiles.end());
 
 	int index = 0;
 	for (int i = 1; i <= rows; i++) {
 		for (int j = 1; j <= columns; j++) {
-			tiles[index].setPosition(Point{ i,j });
+			tiles[index].setPosition(*new Point(i,j));
 			index++;
 		}
 	}
@@ -133,7 +167,7 @@ void Map::generateMap() {
 TileNeighbourhood Map::getNeighbourhood(const APoint& point) {
 	TileNeighbourhood tileNeigh;
 	tileNeigh.clear();
-	for (ATile& tile : tiles) {
+	for (Tile tile : tiles) {
 		if (tile.getPosition().isInContact(point)) {
 			tileNeigh.push_back(&tile);
 		}

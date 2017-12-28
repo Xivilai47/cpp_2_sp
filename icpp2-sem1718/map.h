@@ -27,7 +27,8 @@ protected:
 	const int totalMines;
 
 	// container pro uchovavani bunek (Tile)
-	std::vector<ATile> tiles;
+	std::vector<Tile> tiles;
+
 
 public:
 	// Vytvori prazdnou mapu
