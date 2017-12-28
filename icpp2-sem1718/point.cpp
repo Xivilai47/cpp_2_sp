@@ -4,11 +4,6 @@
 // zde chybi definice tridy Point
 // ...
 
-//Point::Point() : APoint(1, 1) {
-//	this->row = 1;
-//	this->column = 1;
-//}
-
 Point::Point(int row, int column) : APoint(row, column), row(row), column(column) {
 	this->row = row;
 	this->column = column;

@@ -16,7 +16,6 @@ private:
 	int row, column;
 
 public:
-	//Point();
 	// Vytvori bod na zadanem radku a sloupci
 	Point(int row, int column);
 	// Zrusi bod
