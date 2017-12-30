@@ -36,7 +36,7 @@ Map::Map(int rows, int columns, int mines) : AMap(rows,columns,mines), rows(rows
 
 // Zrusi mapu
 Map::~Map() {
-	tiles.~vector();
+
 }
 
 // Vrati vybranou bunku
@@ -62,7 +62,6 @@ ATile& Map::getTile(int row, int column) {
 }
 
 // Vrati vybranou bunku
-// TODO Odkomentovat 
 const ATile& Map::getTile(const APoint& point) const {
 	std::vector<Tile>::const_iterator c_iter = tiles.begin();
 	while (c_iter != tiles.end()) {
@@ -118,19 +117,14 @@ void Map::resetBombsInNeighbourhood() {
 void Map::generateMap() {
 	tiles.clear();
 	for (int i = 0; i < totalMines; i++) {
-		// TODO ZJISTIT toto nebo to druhe?
 		tiles.push_back(Tile{ Point{0,0} });
-		//tiles.push_back(*new Tile(*new Point(0, 0)));
-		//tiles.push_back(*(new Tile(*(new Point(0, 0)))));
 		tiles[i].setBombTile(true);
 	}
 	for (int i = 0; i < rows * columns - totalMines; i++) {
 		tiles.push_back(Tile{ Point{ 0,0 } });
-		//tiles.push_back(*new Tile(*new Point(0,0)));
-		//tiles.push_back(*(new Tile(*(new Point(0, 0)))));
 	}
 
-	// zdroj algoritmu: http://en.cppreference.com/w/cpp/algorithm/random_shuffle
+	// zdroj random algoritmu: http://en.cppreference.com/w/cpp/algorithm/random_shuffle
 	std::random_device rd;
 	std::mt19937 g(rd());
 	std::shuffle(tiles.begin(), tiles.end(), g);
@@ -156,12 +150,6 @@ TileNeighbourhood Map::getNeighbourhood(const APoint& point) {
 		}
 		t_iter++;
 	}
-
-	//for (Tile tile : tiles) {
-	//	if (tile.getPosition().isInContact(point)) {
-	//		tileNeigh.push_back(&tile);
-	//	}
-	//}
 	return tileNeigh;
 }
 
@@ -175,12 +163,16 @@ bool Map::isAnyFlagOnPoint(const APoint& point) const {
 
 // Oznaci danou bunku vlajkou "bomba"
 void Map::flagPoint(const APoint& point) {
-	getTile(point).setTileState(TileState::BombFlag);
+	if (getTile(point).getTileState() != TileState::Uncovered) {
+		getTile(point).setTileState(TileState::BombFlag);
+	}
 }
 
 // Oznaci danou bunku vlajkou "neznamo"
 void Map::flagAsUnknownPoint(const APoint& point) {
-	getTile(point).setTileState(TileState::UnknownFlag);
+	if (getTile(point).getTileState() != TileState::Uncovered) {
+		getTile(point).setTileState(TileState::UnknownFlag);
+	}
 }
 
 // Zrusi vlajky na dane bunce
@@ -203,9 +195,6 @@ void Map::uncoverPoint(const APoint& point) {
 				uncoverPoint(neighbourhood[i]->getPosition());
 			}
 		}
-		//for (ATile* tile : getNeighbourhood(point)) {
-		//	uncoverPoint(tile->getPosition());
-		//}
 	}
 }
 
@@ -232,10 +221,6 @@ GameState Map::getNewGameState() const {
 		}
 		c_iter++;
 	}
-
-	//if (std::for_each(tiles.begin(), tiles.end(), is_bomb_uncovered)) {
-	//	return GameState::Lose;
-	//}
 
 	if (countOfUncoveredTiles == (tiles.size() - totalMines) && getCountOfBombFlags() == 0 && countOfUnknownFlags == 0) {
 		this->~Map();

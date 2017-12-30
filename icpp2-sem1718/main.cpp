@@ -1,7 +1,11 @@
 // odkomentujte pokud chcete spustit sadu testu 
 //#define TESTS
 
-
+// TODO Memory leaks edit
+#define _CRTDBG_MAP_ALLOC
+#include<iostream>
+#include <crtdbg.h>
+// edit end
 
 // nastaveni hry:
 // odkomentujte pokud chcete pokazde jinou hru
@@ -9,7 +13,7 @@
 // parametry
 #define MINESWEEPER_ROWS    20
 #define MINESWEEPER_COLUMNS 20
-#define MINESWEEPER_MINES   5
+#define MINESWEEPER_MINES   40
 
 //  ===============================
 //  === NEMENIT OBSAH SOUBORU ! ===

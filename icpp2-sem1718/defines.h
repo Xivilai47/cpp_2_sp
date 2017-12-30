@@ -1,16 +1,6 @@
 #ifndef _DEFINES_H
 #define _DEFINES_H
 
-// TODO Memory leaks edit
-#define _CRTDBG_MAP_ALLOC
-#include<iostream>
-#include <crtdbg.h>
-#ifdef _DEBUG
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#define new DEBUG_NEW
-#endif
-// edit end
-
 //  ===============================
 //  === NEMENIT OBSAH SOUBORU ! ===
 //  ===============================

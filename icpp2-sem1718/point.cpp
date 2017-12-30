@@ -9,6 +9,7 @@ Point::Point(int row, int column) : APoint(row, column), row(row), column(column
 }
 
 Point::~Point() {
+
 }
 
 // Vraci souradnici radek bodu
