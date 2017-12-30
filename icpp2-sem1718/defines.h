@@ -1,15 +1,23 @@
 #ifndef _DEFINES_H
 #define _DEFINES_H
 
+// TODO Memory leaks edit
+#define _CRTDBG_MAP_ALLOC
+#include<iostream>
+#include <crtdbg.h>
+#ifdef _DEBUG
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define new DEBUG_NEW
+#endif
+// edit end
+
 //  ===============================
 //  === NEMENIT OBSAH SOUBORU ! ===
 //  ===============================
 
-// TODO uprava start
-//#if (defined(_WIN32) || defined(_WIN64))
+#if (defined(_WIN32) || defined(_WIN64))
 #define WINDOWS_PLATFORM
-//#endif
-// TODO uprava konec
+#endif
 
 #ifdef WINDOWS_PLATFORM
 #include <Windows.h>

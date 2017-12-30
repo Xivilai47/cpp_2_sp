@@ -4,14 +4,12 @@
 // zde chybi definice tridy Map
 // ...
 
-// funkcni objekty pro STL algoritmy
-
-// fukcni objekt pro funkci getCountOfBombFlags()
+// getCountOfBombFlags()
 bool is_bomb_flag(const ATile& tile) {
 	return tile.getTileState() == TileState::BombFlag;
 }
 
-// fukcni objekty pro funkci getNewGameState()
+// getNewGameState()
 bool is_unknown_flag(const ATile& tile) {
 	return tile.getTileState() == TileState::UnknownFlag;
 }
@@ -27,16 +25,8 @@ bool is_bomb_uncovered(const ATile& tile) {
 	return false;
 }
 
-
-
 // Vytvori prazdnou mapu
 Map::Map(int rows, int columns, int mines) : AMap(rows,columns,mines), rows(rows), columns(columns), totalMines(mines) {
-	//tiles.resize(rows*columns);	
-	//for (int i = 0; i < rows*columns; i++) {
-	//	tiles.push_back(*new Tile(*new Point(0, 0)));
-	//}
-
-
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			tiles.push_back(Tile{ Point{ i, j } });
@@ -46,7 +36,7 @@ Map::Map(int rows, int columns, int mines) : AMap(rows,columns,mines), rows(rows
 
 // Zrusi mapu
 Map::~Map() {
-
+	tiles.~vector();
 }
 
 // Vrati vybranou bunku
@@ -58,12 +48,6 @@ ATile& Map::getTile(const APoint& point) {
 		}
 		iter++;
 	}
-
-	/*for (ATile& tile : tiles) {
-		if (tile.getPosition() == point) {
-			return tile;
-		}
-	}*/
 }
 
 // Vrati vybranou bunku
@@ -75,17 +59,6 @@ ATile& Map::getTile(int row, int column) {
 		}
 		iter++;
 	}
-
-	//auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
-	//if (iter != tiles.end()) {
-	//	return *iter;
-	//}
-
-	//for (ATile& tile : tiles) {
-	//	if (tile.getPosition().getRow() == row && tile.getPosition().getColumn == column) {
-	//		return tile;
-	//	}
-	//}
 }
 
 // Vrati vybranou bunku
@@ -98,12 +71,6 @@ const ATile& Map::getTile(const APoint& point) const {
 		}
 		c_iter++;
 	}
-
-	//auto iter = std::find(tiles.begin(), tiles.end(), point);
-	//if (iter != tiles.end()) {
-	//	return *iter;
-	//}
-
 }
 
 // Vrati vybranou bunku
@@ -115,30 +82,19 @@ const ATile& Map::getTile(int row, int column) const {
 		}
 		c_iter++;
 	}
-
-	//auto iter = std::find(tiles.begin(), tiles.end(), Point{ row, column });
-	//if (iter != tiles.end()) {
-	//	return *iter;
-	//}
-	//// TODO - jakej je rozdil mezi timhle a predchozim?
 }
 
 // Nastavi na dane bunce hodnoty dle vstupniho parametru
 // Metoda je pouzita pro moznost otestovani hry
 void Map::setTile(const ATile& tile) {
-	// nelze prirazovat do objektu, ktery ma jako clena referenci
 	ATile& reffedTile = getTile(tile.getPosition());
 	reffedTile.setBombTile(tile.isBombTile());
 	reffedTile.setBombsInNeighbourhood(tile.getBombsInNeighbourhood());
 	reffedTile.setTileState(tile.getTileState());
-	// volani pridano kvuli testum, ktere volaji setTile() a nasledne uncoverPoint().
+
+	// volani resetBombsInNeighbourhood() pridano kvuli testum, ktere volaji setTile() a nasledne uncoverPoint().
 	// hodnoty ktere resetBombsInNeighbourhood() doplni jsou treba pro spravnou funkcnost odhalovani bunek
 	resetBombsInNeighbourhood();
-
-	//toto by melo fungovat i kdyz ma objekt referenci
-	//getTile(tile.getPosition()).setBombTile(tile.isBombTile());
-	//getTile(tile.getPosition()).setBombsInNeighbourhood(tile.getBombsInNeighbourhood());
-	//getTile(tile.getPosition()).setTileState(tile.getTileState());
 }
 
 // Prepocita vsechny hodnoty "bombsInNeighbourhood" na jednotlivych bunkach
@@ -156,22 +112,6 @@ void Map::resetBombsInNeighbourhood() {
 			(*iter).setBombsInNeighbourhood(bombCount);
 		iter++;
 	}
-
-	//for (Tile tile : tiles) {
-	//	int bombCount = 0;
-	//	//for (ATile* tile : getNeighbourhood(tile.getPosition())) {
-	//	//	if (tile->isBombTile()) {
-	//	//		bombCount++;
-	//	//	}
-	//	//}
-	//	std::vector<ATile*> neighbourhood = getNeighbourhood(tile.getPosition());
-	//	for (int i = 0; i < neighbourhood.size(); i++) {
-	//		if (neighbourhood[i]->isBombTile()) {
-	//			bombCount++;
-	//		}
-	//	}
-	//	tile.setBombsInNeighbourhood(bombCount);
-	//}
 }
 
 // Vygeneruje nahodne mapu, umisti na ni "totalMines" min a nastavi jednotliva policka
@@ -179,13 +119,15 @@ void Map::generateMap() {
 	tiles.clear();
 	for (int i = 0; i < totalMines; i++) {
 		// TODO ZJISTIT toto nebo to druhe?
+		tiles.push_back(Tile{ Point{0,0} });
 		//tiles.push_back(*new Tile(*new Point(0, 0)));
-		tiles.push_back(*(new Tile(*(new Point(0, 0)))));
+		//tiles.push_back(*(new Tile(*(new Point(0, 0)))));
 		tiles[i].setBombTile(true);
 	}
 	for (int i = 0; i < rows * columns - totalMines; i++) {
-		tiles.push_back(*(new Tile(*(new Point(0, 0)))));
+		tiles.push_back(Tile{ Point{ 0,0 } });
 		//tiles.push_back(*new Tile(*new Point(0,0)));
+		//tiles.push_back(*(new Tile(*(new Point(0, 0)))));
 	}
 
 	// zdroj algoritmu: http://en.cppreference.com/w/cpp/algorithm/random_shuffle
@@ -196,7 +138,7 @@ void Map::generateMap() {
 	int index = 0;
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-			tiles[index].setPosition(*new Point(i,j));
+			tiles[index].setPosition(Point{ i,j });
 			index++;
 		}
 	}
@@ -285,6 +227,7 @@ GameState Map::getNewGameState() const {
 	std::vector<Tile>::const_iterator c_iter = tiles.begin();
 	while (c_iter != tiles.end()) {
 		if ((*c_iter).getTileState() == TileState::Uncovered && (*c_iter).isBombTile()) {
+			this->~Map();
 			return GameState::Lose;
 		}
 		c_iter++;
@@ -295,14 +238,18 @@ GameState Map::getNewGameState() const {
 	//}
 
 	if (countOfUncoveredTiles == (tiles.size() - totalMines) && getCountOfBombFlags() == 0 && countOfUnknownFlags == 0) {
+		this->~Map();
 		return GameState::Won;
+		
 	}
 
 	if (countOfUncoveredTiles == (tiles.size() - totalMines) && getCountOfBombFlags() == totalMines && countOfUnknownFlags == 0) {
+		this->~Map();
 		return GameState::Won;
 	}
 
 	if (getCountOfBombFlags() + countOfUncoveredTiles == totalMines && countOfUnknownFlags == 0) {
+		this->~Map();
 		return GameState::Won;
 	}
 

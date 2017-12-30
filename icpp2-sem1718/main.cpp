@@ -1,13 +1,15 @@
 // odkomentujte pokud chcete spustit sadu testu 
 //#define TESTS
 
+
+
 // nastaveni hry:
 // odkomentujte pokud chcete pokazde jinou hru
-//#define ALLOW_MAP_RANDOMIZE
+#define ALLOW_MAP_RANDOMIZE
 // parametry
 #define MINESWEEPER_ROWS    20
 #define MINESWEEPER_COLUMNS 20
-#define MINESWEEPER_MINES   40
+#define MINESWEEPER_MINES   5
 
 //  ===============================
 //  === NEMENIT OBSAH SOUBORU ! ===
@@ -24,6 +26,7 @@
 #else
 
 int main() {
+	{
 #ifdef ALLOW_MAP_RANDOMIZE
 	std::srand((unsigned int)std::time(NULL));
 #endif
@@ -32,10 +35,17 @@ int main() {
 
 	mines.generateMap();
 	mines.play();
+	}
 
-	// TODO uprava start
-	system("pause");
-	// TODO uprava konec
+	// TODO Memory leaks detection
+	// pridany chlupate zavorky kolem kodu v main() aby byl zavolan destruktor Minesweeper mines jeste pred memory dumpem
+	// statistics - https://msdn.microsoft.com/en-us/library/x98tx3cf.aspx
+	_CrtMemState s1;
+	_CrtMemCheckpoint(&s1);
+	_CrtMemDumpStatistics(&s1);
+	_CrtDumpMemoryLeaks();
+	// edit end
+
 	return 0;
 }
 

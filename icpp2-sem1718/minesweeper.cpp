@@ -72,7 +72,7 @@ Minesweeper::Minesweeper(int rows = 10, int columns = 10, int mines = 10) {
 }
 
 Minesweeper::~Minesweeper() {
-	delete map;
+		delete map;
 }
 
 void Minesweeper::generateMap() {
