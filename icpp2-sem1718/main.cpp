@@ -5,9 +5,9 @@
 // odkomentujte pokud chcete pokazde jinou hru
 //#define ALLOW_MAP_RANDOMIZE
 // parametry
-#define MINESWEEPER_ROWS    20
-#define MINESWEEPER_COLUMNS 20
-#define MINESWEEPER_MINES   40
+#define MINESWEEPER_ROWS    100
+#define MINESWEEPER_COLUMNS 100
+#define MINESWEEPER_MINES   500
 
 //  ===============================
 //  === NEMENIT OBSAH SOUBORU ! ===
@@ -33,6 +33,9 @@ int main() {
 	mines.generateMap();
 	mines.play();
 
+	// TODO uprava start
+	system("pause");
+	// TODO uprava konec
 	return 0;
 }
 

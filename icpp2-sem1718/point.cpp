@@ -5,8 +5,7 @@
 // ...
 
 Point::Point(int row, int column) : APoint(row, column), row(row), column(column) {
-	this->row = row;
-	this->column = column;
+
 }
 
 Point::~Point() {

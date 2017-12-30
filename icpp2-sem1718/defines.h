@@ -5,10 +5,11 @@
 //  === NEMENIT OBSAH SOUBORU ! ===
 //  ===============================
 
-
-#if (defined(_WIN32) || defined(_WIN64))
+// TODO uprava start
+//#if (defined(_WIN32) || defined(_WIN64))
 #define WINDOWS_PLATFORM
-#endif
+//#endif
+// TODO uprava konec
 
 #ifdef WINDOWS_PLATFORM
 #include <Windows.h>

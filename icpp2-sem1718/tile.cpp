@@ -6,8 +6,7 @@
 
 // Vytvori bunku na zadane souradnici
 // Neni bombou, nema bomby v okoli, bunka je skryta
-Tile::Tile(const APoint& position) : ATile(position), position(const_cast<APoint&>(position)) {
-	this->position = position;
+Tile::Tile(const APoint& position) : ATile(position), position(position.getRow(),position.getColumn()) {
 	this->bombTile = false;
 	this->bombsInNeighbourhood = 0;
 	this->tileState = TileState::Hidden;
@@ -22,15 +21,17 @@ Tile::~Tile() {
 const APoint& Tile::getPosition() const {
 	return position;
 }
+
 // Nastavi novou polohu bunky
 void Tile::setPosition(const APoint& position) {
-	this->position = position;
+	this->position = Point{ position.getRow(),position.getColumn() };
 }
 
 // Vraci pocet bomb v okoli bunky
 int Tile::getBombsInNeighbourhood() const {
 	return bombsInNeighbourhood;
 }
+
 // Nastavi pocet bomb v okoli bunky
 void Tile::setBombsInNeighbourhood(int bombsInNeighbourhood) {
 	this->bombsInNeighbourhood = bombsInNeighbourhood;
