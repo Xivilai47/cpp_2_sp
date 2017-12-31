@@ -41,6 +41,7 @@ Map::~Map() {
 
 // Vrati vybranou bunku
 ATile& Map::getTile(const APoint& point) {
+
 	std::vector<Tile>::iterator iter = tiles.begin();
 	while (iter != tiles.end()) {
 		if ((*iter).getPosition() == point) {
@@ -52,6 +53,7 @@ ATile& Map::getTile(const APoint& point) {
 
 // Vrati vybranou bunku
 ATile& Map::getTile(int row, int column) {
+
 	std::vector<Tile>::iterator iter = tiles.begin();
 	while (iter != tiles.end()) {
 		if ((*iter).getPosition() == Point{ row,column }) {
@@ -63,6 +65,7 @@ ATile& Map::getTile(int row, int column) {
 
 // Vrati vybranou bunku
 const ATile& Map::getTile(const APoint& point) const {
+
 	std::vector<Tile>::const_iterator c_iter = tiles.begin();
 	while (c_iter != tiles.end()) {
 		if ((*c_iter).getPosition() == point) {
@@ -74,6 +77,7 @@ const ATile& Map::getTile(const APoint& point) const {
 
 // Vrati vybranou bunku
 const ATile& Map::getTile(int row, int column) const {
+
 	std::vector<Tile>::const_iterator c_iter = tiles.begin();
 	while (c_iter != tiles.end()) {
 		if ((*c_iter).getPosition() == Point{ row,column }) {
@@ -116,6 +120,7 @@ void Map::resetBombsInNeighbourhood() {
 // Vygeneruje nahodne mapu, umisti na ni "totalMines" min a nastavi jednotliva policka
 void Map::generateMap() {
 	tiles.clear();
+
 	for (int i = 0; i < totalMines; i++) {
 		tiles.push_back(Tile{ Point{0,0} });
 		tiles[i].setBombTile(true);
@@ -141,15 +146,16 @@ void Map::generateMap() {
 
 // Vrati okoli bunky (bunky primo sousedici s danou bunkou)
 TileNeighbourhood Map::getNeighbourhood(const APoint& point) {
+
 	TileNeighbourhood tileNeigh;
 	tileNeigh.clear();
-	std::vector<Tile>::iterator t_iter = tiles.begin();
-	while (t_iter != tiles.end()) {
-		if ((*t_iter).getPosition().isInContact(point)) {
-			tileNeigh.push_back(&(*t_iter));
+
+	std::for_each(tiles.begin(), tiles.end(), [this,&point,&tileNeigh](ATile& tile) {
+		if (tile.getPosition().isInContact(point)) {
+			tileNeigh.push_back(&tile);
 		}
-		t_iter++;
-	}
+	});
+
 	return tileNeigh;
 }
 
